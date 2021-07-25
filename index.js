@@ -1,8 +1,9 @@
-const http = require("http")
+const express = require("express")
 const fs = require("fs")
-const url = require("url")
 
-const server = http.createServer((req, res) => {
+const app = express()
+
+app.get("/*", (req, res) => {
     const fileToFind = req.url === "/" ? "./index.html" : `./${req.url}.html`
 
     fs.readFile(fileToFind, "utf-8", (err, data) => {
@@ -19,10 +20,7 @@ const server = http.createServer((req, res) => {
             return
         }
 
-        res.writeHead(200, { "Content-Type": "text/html" })
-        res.write(data)
-        res.end()
-    })
-})
+        res.send(data)
+})})
 
-server.listen(8080, () => {})
+app.listen(8080)
